@@ -1,6 +1,6 @@
 # 🎵 TikTok Downloader CLI
 
-A fast, lightweight CLI tool for downloading highest quality TikTok videos without watermarks, built with Bun.
+A fast, lightweight CLI tool for downloading highest quality TikTok videos without watermarks.
 
 Built with 🧪 Bun. Powered by [tikwm.com](https://tikwm.com).
 
