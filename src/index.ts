@@ -1,8 +1,9 @@
 #!/usr/bin/env bun
+
 import { parseArgs } from "util";
 import { existsSync, mkdirSync } from "fs";
 import path from "path";
-import type { TikWMResponse } from "./types/tikwm.js";
+import { TikWMAPI } from "./lib/api.js";
 import { 
   validateTikTokUrl, 
   generateFilename, 
@@ -11,69 +12,12 @@ import {
 } from "./lib/utils.js";
 
 class TikTokDownloader {
-  private baseUrl = "https://www.tikwm.com/api/video";
-  private userAgent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36";
+  private api: TikWMAPI;
 
-  async submitTask(url: string): Promise<string> {
-    console.log("🔄 Submitting download request...");
-    
-    const formData = new FormData();
-    formData.append("url", url);
-    
-    const response = await fetch(`${this.baseUrl}/task/submit`, {
-      method: "POST",
-      body: formData,
-      headers: {
-        "User-Agent": this.userAgent,
-      },
-    });
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    
-    const data = await response.json() as TikWMResponse;
-    
-    if (data.code !== 0) {
-      throw new Error(`API error: ${data.msg}`);
-    }
-    
-    return data.data.task_id;
+  constructor() {
+    this.api = new TikWMAPI();
   }
-  
-  async getResult(taskId: string, maxRetries = 10): Promise<TikWMResponse["data"]> {
-    console.log("⏳ Processing video...");
-    
-    for (let i = 0; i < maxRetries; i++) {
-      const response = await fetch(`${this.baseUrl}/task/result?task_id=${taskId}`, {
-        headers: {
-          "User-Agent": this.userAgent,
-        },
-      });
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      
-      const data = await response.json() as TikWMResponse;
-      
-      if (data.code !== 0) {
-        throw new Error(`API error: ${data.msg}`);
-      }
-      
-      // Status 2 means processing complete
-      if (data.data.status === 2 && data.data.detail.download_url) {
-        return data.data;
-      }
-      
-      // Wait before retrying
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      process.stdout.write(".");
-    }
-    
-    throw new Error("Video processing timed out. Please try again later.");
-  }
-  
+
   async downloadVideo(downloadUrl: string, filename: string, outputDir: string): Promise<void> {
     const fullPath = path.join(outputDir, filename);
     
@@ -81,7 +25,7 @@ class TikTokDownloader {
     
     const response = await fetch(downloadUrl, {
       headers: {
-        "User-Agent": this.userAgent,
+        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36",
       },
     });
     
@@ -128,8 +72,12 @@ class TikTokDownloader {
       mkdirSync(outputDir, { recursive: true });
     }
     
-    const taskId = await this.submitTask(url);
-    const result = await this.getResult(taskId);
+    console.log("🔄 Submitting download request...");
+    const taskId = await this.api.submitTask(url);
+    
+    console.log("⏳ Processing video...");
+    const result = await this.api.getTaskResult(taskId);
+    
     const filename = generateFilename(
       result.detail.author.unique_id,
       result.detail.id
@@ -219,13 +167,11 @@ Supported URLs:
   }
 }
 
-// Handle Ctrl+C gracefully
 process.on("SIGINT", () => {
   console.log("\n\n👋 Download cancelled by user");
   process.exit(0);
 });
 
-// Handle uncaught errors
 process.on("unhandledRejection", (error) => {
   console.error(`❌ Unhandled error: ${error}`);
   process.exit(1);
