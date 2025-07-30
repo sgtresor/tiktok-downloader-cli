@@ -20,7 +20,7 @@ export class TikWMAPI {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
 
-    const data = await response.json() as TikWMResponse;
+    const data = (await response.json()) as TikWMResponse;
 
     if (data.code !== 0) {
       throw new Error(`API error: ${data.msg}`);
@@ -41,7 +41,7 @@ export class TikWMAPI {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
-      const data = await response.json() as TikWMResponse;
+      const data = (await response.json()) as TikWMResponse;
 
       if (data.code !== 0) {
         throw new Error(`API error: ${data.msg}`);
@@ -53,7 +53,7 @@ export class TikWMAPI {
       }
 
       // Wait before retrying
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       if (i < maxRetries - 1) {
         process.stdout.write(".");
       }

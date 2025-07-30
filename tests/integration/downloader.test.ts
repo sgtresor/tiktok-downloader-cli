@@ -1,6 +1,6 @@
-import { describe, it, expect, beforeAll, afterAll } from "bun:test";
-import { TikTokDownloader } from "../../src/lib/downloader.js";
+import { afterAll, beforeAll, describe, expect, it } from "bun:test";
 import { existsSync, rmSync } from "fs";
+import { TikTokDownloader } from "../../src/lib/downloader.js";
 
 describe("TikTokDownloader Integration", () => {
   const testOutputDir = "./test-downloads";
