@@ -71,7 +71,7 @@ Usage: td [options] <url>
 
 Options:
   -o, --output <template>     Output filename template (default: "author_videoId.mp4")
-  -d, --dir <directory>       Download directory (default: current directory)
+  -d, --dir <directory>       Download directory (default: current directory + /Downloads)
   --version                   Show version information
   -h, --help                  Display help information
 
