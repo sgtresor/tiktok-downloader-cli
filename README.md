@@ -1,17 +1,17 @@
-# 🎵 TikTok Downloader (td)
+# 🎵 TikTok Downloader CLI
 
 A fast, lightweight CLI tool for downloading highest quality TikTok videos without watermarks, built with Bun.
 
+Built with 🧪 Bun. Powered by [tikwm.com](https://tikwm.com).
+
+
 ## ✨ Features
 
-- ⚡ **Lightning Fast**: Built with Bun for maximum performance
-- 🎯 **High Quality**: Downloads videos in best available quality (up to 4K)
+- 🎥 **Best quality** — Pulls the highest resolution available (up to 4k)
 - 🚫 **No Watermarks**: Clean downloads without TikTok branding
 - 🔗 **Flexible URL Support**: Works with all TikTok URL formats
 - 📊 **Progress Tracking**: Real-time download progress with speed indicators
-- 🎵 **Audio Extraction**: Download MP3 audio from TikTok videos
-- 📱 **Cross-Platform**: Works on Windows, macOS, and Linux
-- 🚀 **No Dependencies**: Single binary with everything included
+
 
 ## 🛠️ Installation
 
@@ -19,41 +19,32 @@ A fast, lightweight CLI tool for downloading highest quality TikTok videos witho
 
 - **Bun >= 1.0.0** - [Install Bun](https://bun.sh)
 
-### Install from Source
+### From Source
 
 ```bash
-# Clone the repository
 git clone https://github.com/sgtresor/tiktok-downloader-cli.git
 cd tiktok-downloader-cli
-
-# Install dependencies
 bun install
-
-# Build the CLI
-bun run build
-
-# Install globally
 bun link
-
-# Or run directly
-bun run td [options] <url>
+```
+Now you can run `td` from anywhere 🧙
+```bash
+# (optional) after install you can try
+bun run dev <tiktok-url>
 ```
 
-## 🚀 Usage
+## 🕹️ Usage
 
 ### Basic Usage
 
 ```bash
-# Download a TikTok video
+# download a highest quality tiktok video available
 td "https://www.tiktok.com/@user/video/1234567890123456789"
 
-# Download with custom filename
+# download with custom filename
 td -o "my-video.mp4" "https://vm.tiktok.com/ZMxxxxxx/"
 
-# Extract audio only
-td --audio "https://www.tiktok.com/@user/video/1234567890123456789"
-
-# Download to specific directory
+# download to specific directory
 td -d "./downloads" "https://www.tiktok.com/@user/video/1234567890123456789"
 ```
 
@@ -73,7 +64,7 @@ td "https://m.tiktok.com/v/1234567890123456789.html"
 td "1234567890123456789"
 ```
 
-### CLI Options
+### 🔧 CLI Options
 
 ```bash
 Usage: td [options] <url>
@@ -81,18 +72,11 @@ Usage: td [options] <url>
 Options:
   -o, --output <template>     Output filename template (default: "%(title)s.%(ext)s")
   -d, --dir <directory>       Download directory (default: current directory)
-  -f, --format <format>       Video format: mp4, mov (default: mp4)
-  --audio                     Extract audio only (MP3 format)
-  --no-watermark             Remove watermarks (default: true)
-  --hd                        Force HD quality when available
-  -q, --quiet                 Suppress non-essential output
-  -v, --verbose               Enable verbose logging
   --version                   Show version information
   -h, --help                  Display help information
 
 Examples:
   td "https://www.tiktok.com/@user/video/123"
-  td --audio -o "song.mp3" "https://vm.tiktok.com/abc123/"
   td -d "./videos" --hd "https://www.tiktok.com/@user/video/456"
 ```
 
@@ -100,48 +84,41 @@ Examples:
 
 `td` uses the **tikwm.com API** to fetch TikTok videos without watermarks. The process is:
 
-1. **URL Processing**: Extracts video ID from various TikTok URL formats
-2. **API Request**: Queries tikwm.com API for video metadata and download links
-3. **Quality Selection**: Chooses the highest available quality (up to 4K)
-4. **Download**: Streams video directly to your device with progress tracking
-5. **Post-Processing**: Removes watermarks and applies any requested formatting
+## 🧠 How It Works
 
-The tool handles TikTok's frequent API changes and provides reliable downloads through the tikwm.com service.
+1. 🧾 **Input Parsing**  
+   You run the CLI with a TikTok video URL. The tool validates the URL format and prepares the output directory if it doesn’t exist.
+
+2. 📬 **Submit Download Task**  
+   The video URL is submitted to `tikwm.com` via their official task API endpoint. This returns a task ID used to track processing status.
+
+3. ⏳ **Wait for Processing**  
+   The tool polls the API until the video is fully processed. Once ready, it retrieves the final metadata and download URL.
+
+4. 📄 **Generate Filename**  
+   A filename is generated using the video ID and author name, and cleaned for safe filesystem use.
+
+5. 📥 **Download the File**  
+   The video is streamed directly to disk using Bun’s writer and real-time progress is shown in the terminal.
+
+6. ✅ **Done**  
+   When the download completes, the file is saved in your selected output folder with a clean `.mp4` filename.
+
 
 
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
 
-### Development Setup
-
-```bash
-# Clone and install
-git clone https://github.com/yourusername/td.git
-cd td
-bun install
-
-# Run in development
-bun run dev
-
-# Run tests
-bun test
-
-# Build for production
-bun run build
-```
-
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Credits
+## 💖 Credits
 
-- **[tikwm.com](https://tikwm.com)** - Reliable TikTok API service that powers this tool
-- **[Bun](https://bun.sh)** - Fast JavaScript runtime and toolkit
-- **TikTok Content Creators** - For the amazing content that makes this tool useful
-
-Special thanks to the tikwm.com team for providing a stable API for TikTok video access.
+- 🧠 [tikwm.com](https://tikwm.com) — makes this whole thing possible
+- 🧪 [Bun](https://bun.sh) — speedy toolchain FTW
+- 📱 TikTok creators — you're the real MVPs
 
 ## ⚠️ Disclaimer
 
@@ -156,20 +133,6 @@ By using `td`, you acknowledge that:
 - The developers are not responsible for any misuse of this tool
 
 Please respect content creators' rights and use this tool responsibly. Support your favorite TikTok creators through official channels.
-
-## 🆘 Issues & Support
-
-- **Bug Reports**: [Open an issue](https://github.com/yourusername/td/issues/new?template=bug_report.md)
-- **Feature Requests**: [Request a feature](https://github.com/yourusername/td/issues/new?template=feature_request.md)
-- **Questions**: [Start a discussion](https://github.com/yourusername/td/discussions)
-
-### Common Issues
-
-**"Video not found" error**: The video may be private, deleted, or region-restricted.
-
-**Slow downloads**: Check your internet connection. Some videos may have processing delays.
-
-**API rate limits**: tikwm.com limits to 5,000 requests per day per IP address.
 
 ---
 
