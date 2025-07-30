@@ -10,7 +10,9 @@
   "scripts": {
     "dev": "bun run src/index.ts",
     "build": "bun build src/index.ts --outdir dist --target bun",
-    "build:binary": "bun build src/index.ts --compile --outfile td"
+    "build:binary": "bun build src/index.ts --compile --outfile td",
+    "type-check": "tsc --noEmit",
+    "clean": "rm -rf dist td"
   },
   "keywords": [
     "tiktok",
