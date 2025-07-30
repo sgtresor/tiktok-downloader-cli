@@ -70,7 +70,7 @@ td "1234567890123456789"
 Usage: td [options] <url>
 
 Options:
-  -o, --output <template>     Output filename template (default: "%(title)s.%(ext)s")
+  -o, --output <template>     Output filename template (default: "author_videoId.mp4")
   -d, --dir <directory>       Download directory (default: current directory)
   --version                   Show version information
   -h, --help                  Display help information
