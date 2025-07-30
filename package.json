@@ -1,0 +1,36 @@
+{
+  "name": "tiktok-downloader-cli",
+  "version": "1.0.0",
+  "description": "A fast CLI tool to download highest quality TikTok videos without watermarks",
+  "main": "src/index.ts",
+  "type": "module",
+  "bin": {
+    "td": "./src/index.ts"
+  },
+  "scripts": {
+    "dev": "bun run src/index.ts",
+    "build": "bun build src/index.ts --outdir dist --target bun",
+    "build:binary": "bun build src/index.ts --compile --outfile td"
+  },
+  "keywords": [
+    "tiktok",
+    "downloader",
+    "cli",
+    "video",
+    "no-watermark",
+    "high-quality",
+    "bun"
+  ],
+  "author": "sgtresor",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "^5.0.0"
+  },
+  "peerDependencies": {
+    "bun": ">=1.0.0"
+  }
+}
