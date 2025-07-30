@@ -3,7 +3,12 @@ import { parseArgs } from "util";
 import { existsSync, mkdirSync } from "fs";
 import path from "path";
 import type { TikWMResponse } from "./types/tikwm.js";
-
+import { 
+  validateTikTokUrl, 
+  generateFilename, 
+  displayProgress, 
+  formatBytes 
+} from "./lib/utils.js";
 
 class TikTokDownloader {
   private baseUrl = "https://www.tikwm.com/api/video";
@@ -86,7 +91,6 @@ class TikTokDownloader {
     
     const contentLength = response.headers.get("content-length");
     const totalSize = contentLength ? parseInt(contentLength) : 0;
-    
     let downloadedSize = 0;
     
     const writer = Bun.file(fullPath).writer();
@@ -105,12 +109,7 @@ class TikTokDownloader {
         writer.write(value);
         downloadedSize += value.length;
         
-        if (totalSize > 0) {
-          const progress = ((downloadedSize / totalSize) * 100).toFixed(1);
-          const mbDownloaded = (downloadedSize / 1024 / 1024).toFixed(1);
-          const mbTotal = (totalSize / 1024 / 1024).toFixed(1);
-          process.stdout.write(`\r📊 Progress: ${progress}% (${mbDownloaded}/${mbTotal} MB)`);
-        }
+        displayProgress(downloadedSize, totalSize);
       }
     } finally {
       writer.end();
@@ -120,49 +119,27 @@ class TikTokDownloader {
     console.log(`\n✅ Download completed: ${filename}`);
   }
   
-  sanitizeFilename(filename: string): string {
-    return filename
-      .replace(/[<>:"/\\|?*]/g, "")
-      .replace(/\s+/g, "_")
-      .replace(/[^\w\s\-_.]/g, "")
-      .substring(0, 100);
-  }
-  
-  validateTikTokUrl(url: string): boolean {
-    const tiktokUrlRegex = /^https?:\/\/(www\.)?(tiktok\.com|vm\.tiktok\.com|vt\.tiktok\.com)/;
-    return tiktokUrlRegex.test(url);
-  }
-  
   async download(url: string, outputDir: string = "./downloads"): Promise<void> {
-    // Validate URL
-    if (!this.validateTikTokUrl(url)) {
+    if (!validateTikTokUrl(url)) {
       throw new Error("Please provide a valid TikTok URL");
     }
 
-    // Ensure output directory exists
     if (!existsSync(outputDir)) {
       mkdirSync(outputDir, { recursive: true });
     }
     
-    // Submit task
     const taskId = await this.submitTask(url);
-    
-    // Get result
     const result = await this.getResult(taskId);
+    const filename = generateFilename(
+      result.detail.author.unique_id,
+      result.detail.id
+    );
     
-    // Generate filename
-    const sanitizedTitle = this.sanitizeFilename(result.detail.title);
-    const author = result.detail.author.unique_id;
-    const videoId = result.detail.id;
-    const filename = `${author}_${sanitizedTitle}_${videoId}.mp4`;
-    
-    // Display video info
     console.log(`\n📹 Title: ${result.detail.title}`);
     console.log(`👤 Author: ${result.detail.author.nickname} (@${result.detail.author.unique_id})`);
     console.log(`⏱️  Duration: ${result.detail.duration}s`);
-    console.log(`📊 Size: ${(result.detail.size / 1024 / 1024).toFixed(1)} MB`);
+    console.log(`📊 Size: ${formatBytes(result.detail.size)}`);
     
-    // Download video
     await this.downloadVideo(result.detail.download_url, filename, outputDir);
   }
 }
@@ -209,7 +186,7 @@ Options:
 
 Examples:
   td "https://www.tiktok.com/@user/video/1234567890"
-  td "https://vm.tiktok.com/abcdef" -o ~/Videos
+  td "https://vm.tiktok.com/abc123" -o ~/Videos
 
 Supported URLs:
   • https://www.tiktok.com/@user/video/123456789
@@ -226,7 +203,6 @@ Supported URLs:
     process.exit(1);
   }
 
-  // Fix TypeScript errors with proper type assertions and null coalescing
   const url = positionals[0] as string;
   const outputDir = (values.output ?? "./downloads") as string;
 
