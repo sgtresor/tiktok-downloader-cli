@@ -3,7 +3,46 @@
 import { parseArgs } from "util";
 import { TikTokDownloader } from "./lib/downloader.js";
 
-async function main() {
+const VERSION = "1.0.0";
+
+function showHelp(): void {
+  console.log(`
+🎵 TikTok Downloader (td) v${VERSION}
+Download highest quality TikTok videos without watermarks
+
+Powered by tikwm.com API
+
+Usage: td <tiktok_url> [options]
+
+Options:
+  -o, --output <dir>    Output directory (default: ./downloads)
+  -v, --version         Show version number
+  -h, --help           Show this help message
+
+Examples:
+  td "https://www.tiktok.com/@user/video/1234567890"
+  td "https://vm.tiktok.com/abc123" -o ~/Videos
+
+Supported URLs:
+  • https://www.tiktok.com/@user/video/123456789
+  • https://vm.tiktok.com/shortcode
+  • https://vt.tiktok.com/shortcode
+
+For more information, visit: https://github.com/yourusername/tiktok-downloader
+  `);
+}
+
+function showVersion(): void {
+  console.log(`td v${VERSION}`);
+}
+
+function showUsageError(): void {
+  console.error("❌ Error: Please provide a TikTok URL");
+  console.log("Usage: td <tiktok_url>");
+  console.log("Use 'td --help' for more information");
+}
+
+async function main(): Promise<void> {
   const { values, positionals } = parseArgs({
     args: Bun.argv.slice(2),
     options: {
@@ -25,40 +64,17 @@ async function main() {
   });
 
   if (values.version) {
-    console.log("td v1.0.0");
+    showVersion();
     process.exit(0);
   }
 
   if (values.help) {
-    console.log(`
-🎵 TikTok Downloader (td) v1.0.0
-Download highest quality TikTok videos without watermarks
-
-Powered by tikwm.com API
-
-Usage: td <tiktok_url> [options]
-
-Options:
-  -o, --output <dir>    Output directory (default: ./downloads)
-  -v, --version         Show version number
-  -h, --help           Show this help message
-
-Examples:
-  td "https://www.tiktok.com/@user/video/1234567890"
-  td "https://vm.tiktok.com/abc123" -o ~/Videos
-
-Supported URLs:
-  • https://www.tiktok.com/@user/video/123456789
-  • https://vm.tiktok.com/shortcode
-  • https://vt.tiktok.com/shortcode
-    `);
+    showHelp();
     process.exit(0);
   }
 
   if (positionals.length === 0) {
-    console.error("❌ Error: Please provide a TikTok URL");
-    console.log("Usage: td <tiktok_url>");
-    console.log("Use 'td --help' for more information");
+    showUsageError();
     process.exit(1);
   }
 
@@ -78,11 +94,13 @@ Supported URLs:
   }
 }
 
+// Handle Ctrl+C gracefully
 process.on("SIGINT", () => {
   console.log("\n\n👋 Download cancelled by user");
   process.exit(0);
 });
 
+// Handle uncaught errors
 process.on("unhandledRejection", (error) => {
   console.error(`❌ Unhandled error: ${error}`);
   process.exit(1);
