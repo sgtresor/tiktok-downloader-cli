@@ -19,6 +19,14 @@ Built with 🧪 Bun. Powered by [tikwm.com](https://tikwm.com/originalDownloader
 
 - **Bun >= 1.0.0** - [Install Bun](https://bun.sh)
 
+### Recommended
+```bash
+bun install -g tiktok-downloader-cli
+
+# now you can use anywhere
+td "https://tiktok.com/video/123"
+```
+
 ### From Source
 
 ```bash

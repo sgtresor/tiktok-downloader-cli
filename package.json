@@ -7,6 +7,17 @@
   "bin": {
     "td": "./src/index.ts"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sgtresor/tiktok-downloader-cli.git"
+  },
+  "homepage": "https://github.com/sgtresor/tiktok-downloader-cli#readme",
+  "bugs": {
+    "url": "https://github.com/sgtresor/tiktok-downloader-cli/issues"
+  },
+  "files": [
+    "src/"
+  ],
   "scripts": {
     "dev": "bun run src/index.ts",
     "build": "bun build src/index.ts --outdir dist --target bun",
@@ -17,7 +28,9 @@
     "test:watch": "bun test --watch",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
-    "format": "biome format --write ."
+    "format": "biome format --write .",
+    "prepublishOnly": "bun run type-check && bun run lint && bun test",
+    "publish:npm": "npm publish"
   },
   "keywords": [
     "tiktok",
