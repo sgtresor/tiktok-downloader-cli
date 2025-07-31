@@ -31,10 +31,11 @@ jobs:
         bun run build:binary
         mv td td-linux
     
+    - name: Setup NPM authentication
+      run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+
     - name: Publish to NPM
       run: npm publish
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
     
     - name: Create GitHub Release
       uses: actions/create-release@v1
