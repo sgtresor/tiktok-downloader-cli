@@ -2,7 +2,7 @@
 
 A fast, lightweight CLI tool for downloading highest quality TikTok videos without watermarks.
 
-Built with 🧪 Bun. Powered by [tikwm.com](https://tikwm.com).
+Built with 🧪 Bun. Powered by [tikwm.com](https://tikwm.com/originalDownloader.html).
 
 
 ## ✨ Features
@@ -71,7 +71,7 @@ Usage: td [options] <url>
 
 Options:
   -o, --output <template>     Output filename template (default: "author_videoId.mp4")
-  -d, --dir <directory>       Download directory (default: current directory)
+  -d, --dir <directory>       Download directory (default: ./downloads)
   --version                   Show version information
   -h, --help                  Display help information
 
@@ -116,7 +116,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 💖 Credits
 
-- 🧠 [tikwm.com](https://tikwm.com) — makes this whole thing possible
+- 🧠 [tikwm.com](https://tikwm.com/originalDownloader.html) — makes this whole thing possible
 - 🧪 [Bun](https://bun.sh) — speedy toolchain FTW
 - 📱 TikTok creators — you're the real MVPs
 
