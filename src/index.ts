@@ -1,9 +1,10 @@
 #!/usr/bin/env bun
 
 import { parseArgs } from "util";
+import packageJson from "../package.json" with { type: "json" };
 import { TikTokDownloader } from "./lib/downloader.js";
 
-const VERSION = "1.0.0";
+const VERSION = packageJson.version;
 
 function showHelp(): void {
   console.log(`

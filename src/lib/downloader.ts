@@ -1,5 +1,6 @@
 import { existsSync, mkdirSync } from "fs";
 import path from "path";
+import type { TikWMResponse } from "../types/tikwm.js";
 import { TikWMAPI } from "./api.js";
 import { displayProgress, formatBytes, generateFilename, validateTikTokUrl } from "./utils.js";
 
@@ -55,7 +56,7 @@ export class TikTokDownloader {
     console.log(`\n✅ Download completed: ${filename}`);
   }
 
-  private displayVideoInfo(result: any): void {
+  private displayVideoInfo(result: TikWMResponse["data"]): void {
     console.log(`\n📹 Title: ${result.detail.title}`);
     console.log(`👤 Author: ${result.detail.author.nickname} (@${result.detail.author.unique_id})`);
     console.log(`⏱️  Duration: ${result.detail.duration}s`);
