@@ -1,8 +1,8 @@
 #!/usr/bin/env bun
 
 import { parseArgs } from "util";
+import packageJson from "../package.json" with { type: "json" };
 import { TikTokDownloader } from "./lib/downloader.js";
-import packageJson from "../package.json" assert { type: "json" };
 
 const VERSION = packageJson.version;
 
