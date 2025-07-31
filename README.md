@@ -59,7 +59,7 @@ That's it! You can now use the td command from anywhere.
 
 ```bash
 # Test it out with a TikTok URL
-td "[https://www.tiktok.com/@user/video/12345](https://www.tiktok.com/@user/video/12345)"
+td "https://www.tiktok.com/@user/video/12345"
 ```
 
 ## 🕹️ Usage
