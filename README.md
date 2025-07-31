@@ -15,34 +15,51 @@ Built with 🧪 Bun. Powered by [tikwm.com](https://tikwm.com/originalDownloader
 
 ## 🛠️ Installation
 
-### Prerequisites
+To get started, you need a JavaScript runtime installed on your system. You can use either Node.js (which includes npm) or Bun.
 
-- **Bun >= 1.0.0** - [Install Bun](https://bun.sh)
+### Step 1: Install a Runtime
 
-### Recommended
+<details>
+<summary><b>Option A: Install Node.js (includes npm)</b></summary>
+
+The most common method. If you don't have it, get the LTS version from the [official Node.js website](https://nodejs.org/).
+
+</details>
+
+<details>
+<summary><b>Option B: Install Bun</b></summary>
+
+For the fastest experience. You can install it with a single command. See the [official Bun website](https://bun.sh) for details.
+
+```bash
+curl -fsSL [https://bun.sh/install](https://bun.sh/install) | bash
+```
+
+</details>
+
+### Step 2: Install and Use the CLI
+Once you have a runtime, open your terminal and install the tool globally.
+<details>
+<summary><b>With npm</b></summary>
+
 ```bash
 npm install -g tiktok-downloader-cli
+```
+</details>
 
-# Or with Bun
+<details>
+<summary><b>With Bun</b></summary>
+
+```bash
 bun install -g tiktok-downloader-cli
-
-# restart or start new terminal
-# and now you can use anywhere 🧙
-td "https://tiktok.com/video/123"
 ```
+</details>
 
-### From Source
+That's it! You can now use the td command from anywhere.
 
 ```bash
-git clone https://github.com/sgtresor/tiktok-downloader-cli.git
-cd tiktok-downloader-cli
-bun install
-bun link
-```
-Now you can run `td` from anywhere 🧙
-```bash
-# (optional) after install you can try
-bun run dev <tiktok-url>
+# Test it out with a TikTok URL
+td "[https://www.tiktok.com/@user/video/12345](https://www.tiktok.com/@user/video/12345)"
 ```
 
 ## 🕹️ Usage
