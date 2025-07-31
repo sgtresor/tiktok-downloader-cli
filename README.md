@@ -21,9 +21,13 @@ Built with 🧪 Bun. Powered by [tikwm.com](https://tikwm.com/originalDownloader
 
 ### Recommended
 ```bash
+npm install -g tiktok-downloader-cli
+
+# Or with Bun
 bun install -g tiktok-downloader-cli
 
-# now you can use anywhere
+# restart or start new terminal
+# and now you can use anywhere 🧙
 td "https://tiktok.com/video/123"
 ```
 
