@@ -83,8 +83,6 @@ Examples:
 
 `td` uses the **tikwm.com API** to fetch TikTok videos without watermarks. The process is:
 
-## 🧠 How It Works
-
 1. 🧾 **Input Parsing**  
    You run the CLI with a TikTok video URL. The tool validates the URL format and prepares the output directory if it doesn’t exist.
 
