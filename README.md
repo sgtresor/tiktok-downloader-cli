@@ -7,7 +7,7 @@ Built with 🧪 Bun. Powered by [tikwm.com](https://tikwm.com/originalDownloader
 
 ## ✨ Features
 
-- 🎥 **Best quality** — Pulls the highest resolution available (up to 4k)
+- 🎥 **Best quality** — Downloads original quality videos without 720p limit
 - 🚫 **No Watermarks**: Clean downloads without TikTok branding
 - 🔗 **Flexible URL Support**: Works with all TikTok URL formats
 - 📊 **Progress Tracking**: Real-time download progress with speed indicators
@@ -40,6 +40,9 @@ bun run dev <tiktok-url>
 ```bash
 # download a highest quality tiktok video available
 td "https://www.tiktok.com/@user/video/1234567890123456789"
+
+# Download with custom output directory
+td "https://vm.tiktok.com/ZMxxxxxx/" -o ~/Videos
 ```
 
 ### Supported URL Formats
@@ -50,12 +53,7 @@ td "https://www.tiktok.com/@username/video/1234567890123456789"
 
 # Short URLs
 td "https://vm.tiktok.com/ZMxxxxxx/"
-
-# Mobile URLs
-td "https://m.tiktok.com/v/1234567890123456789.html"
-
-# Direct video IDs
-td "1234567890123456789"
+td "https://vt.tiktok.com/ZMxxxxxx/"
 ```
 
 ### 🔧 CLI Options
@@ -70,6 +68,7 @@ Options:
 
 Examples:
   td "https://www.tiktok.com/@user/video/123"
+  td "https://www.tiktok.com/@user/video/456" -o ~/Videos
 ```
 
 ## ⚙️ How It Works
