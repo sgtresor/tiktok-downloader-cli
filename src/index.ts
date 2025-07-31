@@ -2,8 +2,9 @@
 
 import { parseArgs } from "util";
 import { TikTokDownloader } from "./lib/downloader.js";
+import packageJson from "../package.json" assert { type: "json" };
 
-const VERSION = "1.0.0";
+const VERSION = packageJson.version;
 
 function showHelp(): void {
   console.log(`
