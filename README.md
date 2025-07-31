@@ -40,12 +40,6 @@ bun run dev <tiktok-url>
 ```bash
 # download a highest quality tiktok video available
 td "https://www.tiktok.com/@user/video/1234567890123456789"
-
-# download with custom filename
-td -o "my-video.mp4" "https://vm.tiktok.com/ZMxxxxxx/"
-
-# download to specific directory
-td -d "./downloads" "https://www.tiktok.com/@user/video/1234567890123456789"
 ```
 
 ### Supported URL Formats
@@ -70,14 +64,12 @@ td "1234567890123456789"
 Usage: td [options] <url>
 
 Options:
-  -o, --output <template>     Output filename template (default: "author_videoId.mp4")
-  -d, --dir <directory>       Download directory (default: ./downloads)
+  -o, --output <dir>          Output directory (default: current directory)
   --version                   Show version information
   -h, --help                  Display help information
 
 Examples:
   td "https://www.tiktok.com/@user/video/123"
-  td -d "./videos" --hd "https://www.tiktok.com/@user/video/456"
 ```
 
 ## ⚙️ How It Works

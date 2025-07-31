@@ -15,7 +15,7 @@ Powered by tikwm.com API
 Usage: td <tiktok_url> [options]
 
 Options:
-  -o, --output <dir>    Output directory (default: ./downloads)
+  -o, --output <dir>    Output directory (default: current directory)
   -v, --version         Show version number
   -h, --help           Show this help message
 
@@ -49,7 +49,7 @@ async function main(): Promise<void> {
       output: {
         type: "string",
         short: "o",
-        default: "./downloads",
+        default: process.cwd(),
       },
       version: {
         type: "boolean",
