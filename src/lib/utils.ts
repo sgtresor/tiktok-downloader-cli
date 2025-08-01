@@ -7,25 +7,24 @@ export function checkFileExists(filepath: string): boolean {
 export async function promptOverwrite(filename: string): Promise<boolean> {
   console.log(`\n⚠️  File ${filename} already exists.`);
   console.log("Overwrite?");
-  
+
   process.stdout.write("Choice (y/N): ");
-  
+
   // Read user input from stdin
   for await (const line of console) {
     const input = line.toString().trim().toLowerCase();
-    
-    if (input === 'y' || input === 'yes') {
+
+    if (input === "y" || input === "yes") {
       return true;
-    } else if (input === 'n' || input === 'no' || input === '') {
+    } else if (input === "n" || input === "no" || input === "") {
       return false;
     } else {
       process.stdout.write("Please enter 'y' for yes or 'n' for no: ");
     }
   }
-  
+
   return false; // Default to no if something goes wrong
 }
-
 
 export function formatBytes(bytes: number): string {
   if (bytes === 0) return "0 B";

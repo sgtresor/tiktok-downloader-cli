@@ -2,7 +2,14 @@ import { existsSync, mkdirSync } from "fs";
 import path from "path";
 import type { TikWMResponse } from "../types/tikwm.js";
 import { TikWMAPI } from "./api.js";
-import { checkFileExists, displayProgress, formatBytes, generateFilename, promptOverwrite, validateTikTokUrl } from "./utils.js";
+import {
+  checkFileExists,
+  displayProgress,
+  formatBytes,
+  generateFilename,
+  promptOverwrite,
+  validateTikTokUrl,
+} from "./utils.js";
 
 export class TikTokDownloader {
   private api: TikWMAPI;
