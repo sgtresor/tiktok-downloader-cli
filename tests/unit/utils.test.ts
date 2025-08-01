@@ -1,5 +1,24 @@
-import { describe, expect, it } from "bun:test";
-import { formatBytes, generateFilename, validateTikTokUrl } from "../../src/lib/utils";
+import { afterEach, describe, expect, it, spyOn } from "bun:test";
+import { 
+  checkFileExists, 
+  formatBytes, 
+  generateFilename, 
+  promptOverwrite, 
+  validateTikTokUrl 
+} from "../../src/lib/utils.js";
+import { existsSync, unlinkSync, writeFileSync } from "node:fs";
+
+class MockConsole {
+  log = () => {};
+  
+  constructor(private responses: string[]) {}
+  
+  async *[Symbol.asyncIterator]() {
+    for (const response of this.responses) {
+      yield { toString: () => response };
+    }
+  }
+}
 
 describe("Utils", () => {
   describe("formatBytes", () => {
@@ -30,6 +49,79 @@ describe("Utils", () => {
     it("should generate correct filename", () => {
       expect(generateFilename("testuser", "123456789")).toBe("testuser_123456789.mp4");
       expect(generateFilename("@user", "987654321")).toBe("@user_987654321.mp4");
+    });
+  });
+
+  describe("checkFileExists", () => {
+    const testFile = "./test-file.mp4";
+    
+    afterEach(() => {
+      if (existsSync(testFile)) {
+        unlinkSync(testFile);
+      }
+    });
+
+    it("should return true when file exists", () => {
+      writeFileSync(testFile, "test content");
+      expect(checkFileExists(testFile)).toBe(true);
+    });
+
+    it("should return false when file does not exist", () => {
+      expect(checkFileExists("./non-existent-file.mp4")).toBe(false);
+    });
+  });
+
+  describe("promptOverwrite", () => {
+    let originalConsole: any;
+    let mockStdoutWrite: any;
+
+    afterEach(() => {
+      if (originalConsole) {
+        global.console = originalConsole;
+      }
+      if (mockStdoutWrite) {
+        mockStdoutWrite.mockRestore();
+      }
+    });
+
+    it("should return true when user enters 'y'", async () => {
+      originalConsole = global.console;
+      mockStdoutWrite = spyOn(process.stdout, 'write').mockImplementation(() => true);
+      
+      global.console = new MockConsole(['y\n']) as any;
+
+      const result = await promptOverwrite("test.mp4");
+      expect(result).toBe(true);
+    });
+
+    it("should return false when user enters 'n'", async () => {
+      originalConsole = global.console;
+      mockStdoutWrite = spyOn(process.stdout, 'write').mockImplementation(() => true);
+      
+      global.console = new MockConsole(['n\n']) as any;
+
+      const result = await promptOverwrite("test.mp4");
+      expect(result).toBe(false);
+    });
+
+    it("should return false when user enters empty string", async () => {
+      originalConsole = global.console;
+      mockStdoutWrite = spyOn(process.stdout, 'write').mockImplementation(() => true);
+      
+      global.console = new MockConsole(['\n']) as any;
+
+      const result = await promptOverwrite("test.mp4");
+      expect(result).toBe(false);
+    });
+
+    it("should keep asking until valid input", async () => {
+      originalConsole = global.console;
+      mockStdoutWrite = spyOn(process.stdout, 'write').mockImplementation(() => true);
+      
+      global.console = new MockConsole(['invalid\n', 'also-bad\n', 'y\n']) as any;
+
+      const result = await promptOverwrite("test.mp4");
+      expect(result).toBe(true);
     });
   });
 });

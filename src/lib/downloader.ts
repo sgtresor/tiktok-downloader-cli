@@ -2,7 +2,7 @@ import { existsSync, mkdirSync } from "fs";
 import path from "path";
 import type { TikWMResponse } from "../types/tikwm.js";
 import { TikWMAPI } from "./api.js";
-import { displayProgress, formatBytes, generateFilename, validateTikTokUrl } from "./utils.js";
+import { checkFileExists, displayProgress, formatBytes, generateFilename, promptOverwrite, validateTikTokUrl } from "./utils.js";
 
 export class TikTokDownloader {
   private api: TikWMAPI;
@@ -79,6 +79,17 @@ export class TikTokDownloader {
     const result = await this.api.getTaskResult(taskId);
 
     const filename = generateFilename(result.detail.author.unique_id, result.detail.id);
+    const fullPath = path.join(outputDir, filename);
+
+    // Check if file exists
+    if (checkFileExists(fullPath)) {
+      const shouldOverwrite = await promptOverwrite(filename);
+      if (!shouldOverwrite) {
+        console.log("✅ Download cancelled.");
+        return;
+      }
+      console.log("📝 Proceeding with overwrite...");
+    }
 
     this.displayVideoInfo(result);
 
