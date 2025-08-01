@@ -1,6 +1,6 @@
 {
   "name": "tiktok-downloader-cli",
-  "version": "1.0.5",
+  "version": "1.1.0",
   "description": "A fast CLI tool to download highest quality TikTok videos without watermarks",
   "main": "src/index.ts",
   "type": "module",
